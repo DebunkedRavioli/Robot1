@@ -55,7 +55,7 @@ Function navigate_to_position(target_position, speed):
 collect_red_block()
 collect_yellow_block()
 
-#SECOND PSEUDOCODE
+# SECOND PSEUDOCODE
 // --- Initialization ---
 Initialize EV3 sensors (color sensor, ultrasonic sensor, motor ports)
 Define target color RED
@@ -104,7 +104,7 @@ Function navigate_to_position(target_position, speed):
 // --- Main Execution ---
 search_and_collect()
 
-#THIRD PSEUDOCODE
+# THIRD PSEUDOCODE
 // --- Initialization ---
 Initialize EV3 sensors (color sensor, ultrasonic sensor, motor ports)
 Define target color RED
