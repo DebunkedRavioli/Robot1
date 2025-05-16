@@ -11,6 +11,3 @@ Copy your code from every subsequent test into a code block in Markdown. You wil
 Provide peer evaluations from other team members.
 
 Provide an individual project evaluation in relation to peer feedback, achievement of functional and non-functional requirements, final performance, project management and suggestions for future improvement.
-## Assessment Journal *Started on 12/05/2025*
-12/05/25 - Created and worked on markdown file
-13/05/25 - Worked on code.
