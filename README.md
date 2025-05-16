@@ -1,7 +1,7 @@
 # EV3 Robot Coding Project
 This repository contains the code and documentation for the robot tasks, including logical explanations and results for each function and module.
 # Note
-- Current code in robot.py is *not* my code for the task.
+- Current code in main.py is my main draft for the task.
 - The markdown file was started on the 12/05/2025
 
 # Acknowledgements
