@@ -1,0 +1,57 @@
+// --- Initialization ---
+Initialize EV3 sensors (color sensor, ultrasonic sensor, motor ports)
+Define target color RED
+Define target color YELLOW
+Define red_dropoff_position
+Define yellow_dropoff_position
+Define search_speed
+Define transport_speed
+Define obstacle_avoidance_distance
+Define search_pattern  // e.g., spiral, back and forth
+
+// --- Main Program ---
+
+// --- Search and Collect ---
+Function search_and_collect():
+  While red_block_collected is FALSE or yellow_block_collected is FALSE:
+    Follow the defined search_pattern at search_speed
+    If ultrasonic sensor detects obstacle within obstacle_avoidance_distance:
+      Perform obstacle_avoidance()
+    If color sensor detects target color RED and red_block_collected is FALSE:
+      Stop moving
+      Grab the red block
+      red_block_collected = TRUE
+      Navigate to red_dropoff_position at transport_speed
+      Release the red block
+      // Optionally, return to the search area
+    Else If color sensor detects target color YELLOW and yellow_block_collected is FALSE:
+      Stop moving
+      Grab the yellow block
+      yellow_block_collected = TRUE
+      Navigate to yellow_dropoff_position at transport_speed
+      Release the yellow block
+      // Optionally, return to the search area
+
+// --- Obstacle Avoidance ---
+Function perform_obstacle_avoidance():
+  Stop moving
+  Move backward slightly
+  Turn left or right randomly (small angle)
+  Move forward briefly
+
+// --- Navigation (Simplified) ---
+Function navigate_to_position(target_position, speed):
+ Display message "Moving towards target position..."
+    // Example using time-based movement (adjust durations based on testing):
+    If target_position is equal to red_dropoff_position:
+        // Logic to move to red drop-off (e.g., move forward for a specific time, turn, etc.)
+        Move forward at speed for 5 seconds (motors A and D forward) // Placeholder duration
+    Else if target_position is equal to yellow_dropoff_position:
+        // Logic to move to yellow drop-off
+        Move forward at speed for 8 seconds (motors A and D forward) // Placeholder duration
+    End If
+    Wait for 1 second
+    Display message "Reached target position (approximate)."
+
+// --- Main Execution ---
+search_and_collect()
