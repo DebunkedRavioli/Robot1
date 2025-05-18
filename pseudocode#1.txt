@@ -1,0 +1,103 @@
+// --- Initialization ---
+Initialize EV3 sensors (color sensor on port S3, ultrasonic sensor on port S4, motor ports A and D for movement, port B for grabber motor)
+Define target color RED (e.g., RGB value or sensor reading range)
+Define target color YELLOW (e.g., RGB value or sensor reading range)
+Define red_dropoff_position (e.g., (x1, y1) coordinates or relative motor encoder values)
+Define yellow_dropoff_position (e.g., (x2, y2) coordinates or relative motor encoder values)
+Define search_speed (e.g., motor power value between -100 and 100)
+Define transport_speed (e.g., motor power value between -100 and 100)
+Define obstacle_avoidance_distance (e.g., distance in centimeters)
+
+// --- Global Variables ---
+red_block_found = FALSE
+yellow_block_found = FALSE
+
+// --- Main Program ---
+
+// --- Collect Red Block ---
+Function collect_red_block():
+    Display message "Searching for red block..."
+    While red_block_found is FALSE:
+        Move forward at search_speed (motors A and D forward)
+        If ultrasonic sensor detects distance < obstacle_avoidance_distance:
+            Display message "Obstacle detected, performing avoidance..."
+            Call function perform_obstacle_avoidance()
+        End If
+        Get color sensor reading
+        If color sensor reading is equal to target color RED:
+            Display message "Red block found!"
+            Stop moving (motors A and D stop)
+            Activate motor B forward for 1 second // Grab red block
+            Wait for 1 second
+            Set variable red_block_found to TRUE
+            Display message "Red block grabbed."
+            Call function navigate_to_position(red_dropoff_position, transport_speed)
+            Display message "Navigating to red drop-off..."
+            Activate motor B backward for 1 second // Release red block
+            Wait for 1 second
+            Stop moving (motors A and D stop)
+            Display message "Red block dropped off."
+        End If
+    End While
+
+// --- Collect Yellow Block ---
+Function collect_yellow_block():
+    Display message "Searching for yellow block..."
+    While yellow_block_found is FALSE:
+        Move forward at search_speed (motors A and D forward)
+        If ultrasonic sensor detects distance < obstacle_avoidance_distance:
+            Display message "Obstacle detected, performing avoidance..."
+            Call function perform_obstacle_avoidance()
+        End If
+        Get color sensor reading
+        If color sensor reading is equal to target color YELLOW:
+            Display message "Yellow block found!"
+            Stop moving (motors A and D stop)
+            Activate motor B forward for 1 second // Grab yellow block
+            Wait for 1 second
+            Set variable yellow_block_found to TRUE
+            Display message "Yellow block grabbed."
+            Call function navigate_to_position(yellow_dropoff_position, transport_speed)
+            Display message "Navigating to yellow drop-off..."
+            Activate motor B backward for 1 second // Release yellow block
+            Wait for 1 second
+            Stop moving (motors A and D stop)
+            Display message "Yellow block dropped off."
+        End If
+    End While
+
+// --- Obstacle Avoidance ---
+Function perform_obstacle_avoidance():
+    Stop moving (motors A and D stop)
+    Move backward at a slower speed for 0.5 seconds (motors A and D backward)
+    Wait for 0.5 seconds
+    Generate random integer between 0 and 1
+    If random integer is 0:
+        Turn left slightly (motor A backward, motor D forward for 0.75 seconds)
+        Display message "Turning left..."
+    Else:
+        Turn right slightly (motor A forward, motor D backward for 0.75 seconds)
+        Display message "Turning right..."
+    End If
+    Wait for 0.75 seconds
+    Move forward at a slower speed for 0.5 seconds (motors A and D forward)
+    Wait for 0.5 seconds
+
+// --- Navigation (Simplified) ---
+Function navigate_to_position(target_position, speed):
+    Display message "Moving towards target position..."
+    // Example using time-based movement (adjust durations based on testing):
+    If target_position is equal to red_dropoff_position:
+        // Logic to move to red drop-off (e.g., move forward for a specific time, turn, etc.)
+        Move forward at speed for 5 seconds (motors A and D forward) // Placeholder duration
+    Else if target_position is equal to yellow_dropoff_position:
+        // Logic to move to yellow drop-off
+        Move forward at speed for 8 seconds (motors A and D forward) // Placeholder duration
+    End If
+    Wait for 1 second
+    Display message "Reached target position (approximate)."
+
+// --- Main Execution ---
+Call function collect_red_block()
+Call function collect_yellow_block()
+Display message "Mission complete!"
