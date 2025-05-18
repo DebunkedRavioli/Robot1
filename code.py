@@ -110,12 +110,11 @@ while True:
     elif detected_color != Color.NONE:  # Avoid other blocks
         turn(90)  # Example: Turn 90 degrees to avoid
 
-    # Stop condition (add specific logic, e.g., a timer or manual stop)
-    # Example: break if task is completed
+    # When the robot has completed the task of dropping off the red and yellow blocks, simply turn off the ev3 robot.
         
 # Explanation:
 #1.Initialization: The robot is set up with motors and a color sensor. Gripping and releasing actions are handled by the grip_motor.
 #2.Block Detection: The robot moves forward, continuously checking for red or yellow blocks. If detected, it collects the block using the gripping motor.
-#3.Navigation to Drop-off Zones: You need to define the navigation logic to steer the robot toward the target position for each block.
+#3.Navigation to Drop-off Zones: Drops off blocks at drop-off zones.
 #4.Avoiding Other Blocks: Non-red and non-yellow blocks are avoided by executing a turn.
 #5.Repetition: The robot repeats these steps until all blocks are transported to their respective drop-off zones.
