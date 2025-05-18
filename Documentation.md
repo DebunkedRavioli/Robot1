@@ -31,5 +31,7 @@ I finished my flowchart, made a 3rd pseudocode solution with some help from copi
 - Finished mechatronics research
 - Final touches to pseudocodes
 - Finished all flowcharts
-- Made jupiter notebook portfolio and put everything in there like the documentation and requirements definition and more
 - Made peer evaluations
+- Finished project evaluation
+- Touched up requirements definition
+- Finished testing and debugging
