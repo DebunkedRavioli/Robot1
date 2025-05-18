@@ -1,0 +1,175 @@
+// --- Initialization ---
+Initialize EV3 sensors (color sensor on port S3, ultrasonic sensor on port S4, motor ports A and D for movement, port B for grabber motor)
+Define target color RED (e.g., RGB value or sensor reading range)
+Define target color YELLOW (e.g., RGB value or sensor reading range)
+Define red_dropoff_position (e.g., (x1, y1) coordinates or relative motor encoder values)
+Define yellow_dropoff_position (e.g., (x2, y2) coordinates or relative motor encoder values)
+Define search_speed (e.g., motor power value between -100 and 100)
+Define transport_speed (e.g., motor power value between -100 and 100)
+Define obstacle_avoidance_distance (e.g., distance in centimeters)
+Define search_pattern (e.g., "spiral", "grid", "line")
+
+// --- Global Variables ---
+red_block_location = UNKNOWN
+yellow_block_location = UNKNOWN
+
+// --- Main Program ---
+
+// --- Locate Blocks ---
+Function locate_blocks():
+    Display message "Locating blocks..."
+    While red_block_location is UNKNOWN OR yellow_block_location is UNKNOWN:
+        If search_pattern is "spiral":
+            Call function follow_spiral_pattern(search_speed)
+        Else If search_pattern is "grid":
+            Call function follow_grid_pattern(search_speed)
+        Else If search_pattern is "line":
+            Call function follow_line_pattern(search_speed)
+        End If
+
+        If ultrasonic sensor detects distance < obstacle_avoidance_distance:
+            Display message "Obstacle detected, avoiding..."
+            Call function perform_obstacle_avoidance()
+        End If
+
+        Get color sensor reading
+        If color sensor reading is equal to target color RED AND red_block_location is UNKNOWN:
+            Display message "Red block located!"
+            Set variable red_block_location to Get current robot position // Requires a way to track position (e.g., using encoders and angle)
+        Else If color sensor reading is equal to target color YELLOW AND yellow_block_location is UNKNOWN:
+            Display message "Yellow block located!"
+            Set variable yellow_block_location to Get current robot position // Requires a way to track position
+        End If
+    End While
+    Display message "Both blocks located."
+
+// --- Follow Search Patterns ---
+Function follow_spiral_pattern(speed):
+    // Implement spiral movement logic using motor controls and potentially time or encoders
+    // Example: Gradually increase turning radius while moving forward
+    Move forward at speed (motors A and D forward)
+    Adjust motor speeds for a slight turn (e.g., motor A slightly slower than motor D)
+    // Increment a variable controlling the turning radius or duration
+    // Continue until a block is found or a search limit is reached
+
+Function follow_grid_pattern(speed):
+    // Implement grid-based movement with turns and straight lines
+    // Requires keeping track of the robot's position or relative movement
+    Move forward at speed for a set distance (based on encoder counts or time)
+    Stop moving
+    Turn right 90 degrees (control motor speeds and duration/encoder counts for a 90-degree turn)
+    Move forward again
+    // Repeat this pattern, potentially adjusting the grid size or direction
+
+Function follow_line_pattern(speed):
+    // Implement simple straight line movement, potentially with turns at boundaries
+    Move forward at speed
+    // Periodically check for boundaries (if known) and turn around
+
+// --- Transport Blocks ---
+Function transport_blocks():
+    Display message "Transporting blocks..."
+    // Strategy for which block to pick up first (e.g., based on distance from current position)
+    If red_block_location is NOT UNKNOWN AND yellow_block_location is UNKNOWN:
+        Display message "Moving to red block..."
+        Call function navigate_to_position(red_block_location, transport_speed)
+        Call function pick_up_block(RED)
+        Call function navigate_to_position(red_dropoff_position, transport_speed)
+        Call function drop_off_block()
+        Set variable red_block_location to UNKNOWN
+    Else If yellow_block_location is NOT UNKNOWN AND red_block_location is UNKNOWN:
+        Display message "Moving to yellow block..."
+        Call function navigate_to_position(yellow_block_location, transport_speed)
+        Call function pick_up_block(YELLOW)
+        Call function navigate_to_position(yellow_dropoff_position, transport_speed)
+        Call function drop_off_block()
+        Set variable yellow_block_location to UNKNOWN
+    Else If red_block_location is NOT UNKNOWN AND yellow_block_location is NOT UNKNOWN:
+        // Decide which block to pick up first (e.g., based on proximity to current location)
+        Get current robot position
+        Calculate distance to red_block_location
+        Calculate distance to yellow_block_location
+        If distance to red_block_location < distance to yellow_block_location:
+            Display message "Moving to red block first..."
+            Call function navigate_to_position(red_block_location, transport_speed)
+            Call function pick_up_block(RED)
+            Call function navigate_to_position(red_dropoff_position, transport_speed)
+            Call function drop_off_block()
+            Set variable red_block_location to UNKNOWN
+            Display message "Moving to yellow block..."
+            Call function navigate_to_position(yellow_block_location, transport_speed)
+            Call function pick_up_block(YELLOW)
+            Call function navigate_to_position(yellow_dropoff_position, transport_speed)
+            Call function drop_off_block()
+            Set variable yellow_block_location to UNKNOWN
+        Else:
+            Display message "Moving to yellow block first..."
+            Call function navigate_to_position(yellow_block_location, transport_speed)
+            Call function pick_up_block(YELLOW)
+            Call function navigate_to_position(yellow_dropoff_position, transport_speed)
+            Call function drop_off_block()
+            Set variable yellow_block_location to UNKNOWN
+            Display message "Moving to red block..."
+            Call function navigate_to_position(red_block_location, transport_speed)
+            Call function pick_up_block(RED)
+            Call function navigate_to_position(red_dropoff_position, transport_speed)
+            Call function drop_off_block()
+            Set variable red_block_location to UNKNOWN
+        End If
+    End If
+    Display message "All blocks transported."
+
+// --- Pick Up Block ---
+Function pick_up_block(block_color):
+    Display message "Picking up " + block_color + " block..."
+    Stop moving (motors A and D stop)
+    Activate motor B forward for 1 second // Close grabber
+    Wait for 1 second
+    Display message block_color + " block grabbed."
+
+// --- Drop Off Block ---
+Function drop_off_block():
+    Display message "Dropping off block..."
+    Stop moving (motors A and D stop)
+    Activate motor B backward for 1 second // Open grabber
+    Wait for 1 second
+    Display message "Block dropped off."
+
+// --- Obstacle Avoidance ---
+Function perform_obstacle_avoidance():
+    Stop moving (motors A and D stop)
+    Move backward at a slower speed for 0.5 seconds (motors A and D backward)
+    Wait for 0.5 seconds
+    Generate random integer between 0 and 1
+    If random integer is 0:
+        Turn left slightly (motor A backward, motor D forward for 0.75 seconds)
+        Display message "Turning left..."
+    Else:
+        Turn right slightly (motor A forward, motor D backward for 0.75 seconds)
+        Display message "Turning right..."
+    End If
+    Wait for 0.75 seconds
+    Move forward at a slower speed for 0.5 seconds (motors A and D forward)
+    Wait for 0.5 seconds
+
+// --- Navigation (Advanced - Requires more complex implementation) ---
+Function navigate_to_position(target_location, speed):
+    Display message "Navigating to target..."
+    Get current robot position (x, y, angle) // Requires tracking
+    Calculate angle to target_location (tx, ty)
+    Calculate distance to target_location
+
+    While distance to target_location > a small threshold:
+        Calculate required turn angle
+        Turn robot by required turn angle (using motor control and potentially gyroscope/encoders)
+        Move forward at speed for a short distance (based on remaining distance and speed)
+        Update current robot position
+        Recalculate distance to target_location
+
+    Stop moving
+    Display message "Reached target (advanced navigation)."
+
+// --- Main Execution ---
+Call function locate_blocks()
+Call function transport_blocks()
+Display message "Mission complete!"
