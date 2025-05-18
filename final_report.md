@@ -1,0 +1,2 @@
+# Final Report
+Our groups choses to use Oscar's code as his code incorporated parts of all of our codes and we think his is probably the most effective solution overall so that is why we chose him to present our code. The reason why my code wasn't presented was because my code had some flaws with effiecency and oscar's code had the best overall dynamics. Oscar's final code has components from our other group members code.
