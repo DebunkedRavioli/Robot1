@@ -1,6 +1,8 @@
 # The functional and non-functional requirements of the task:
 ## Functional:
-- Robot travels and if the robot finds red/yellow it takes the block to the drop off zone.
+- Robot travels detects blocks using ultrasonci sensor.
+- Robot uses colour sensor to detect colour.
+- If red/yellow the robot picks up the block using grippers and moves it to the allocated drop off zone.
 - If any other coloured block is in front, it will turn away and keep looking.
 ## Non-Functional:
 - Grippers because it could push the blocks.
