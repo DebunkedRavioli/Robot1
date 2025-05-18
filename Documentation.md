@@ -1,4 +1,4 @@
-# Project Journal
+# Project Documentation
 ## People In Our Team:
 - Alex Alksnis
 - Oscar Lou
@@ -28,4 +28,8 @@ I finished my flowchart, made a 3rd pseudocode solution with some help from copi
 ## Goals
 - Finish up everything for assessment task due tomorrow
 ## Progress
-- Worked on canva: made aesthetic changes and added paragraphs: "When did mechatronics start?" and "Early days of mechatronics"
+- Finished mechatronics research
+- Final touches to pseudocodes
+- Finished all flowcharts
+- Made jupiter notebook portfolio and put everything in there like the documentation and requirements definition and more
+- Made peer evaluations
